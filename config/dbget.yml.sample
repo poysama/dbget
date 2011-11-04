@@ -1,0 +1,12 @@
+backups:
+  path: /opt/backups
+  cache: /tmp/dbget_backups
+
+openssl:
+  passphrase: XXX
+
+mapping:
+  db_1:
+    mysql: db1_basename
+    mongo: db1_basename
+

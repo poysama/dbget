@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.join(File.dirname(__FILE__), '../lib/dbget'))
+
+exit if ENV['SSH_ORIGINAL_COMMAND'].nil?
+
+#STDERR.puts ENV['SSH_ORIGINAL_COMMAND']
+user = ARGV[0]
+options = ENV['SSH_ORIGINAL_COMMAND'].split(" ")
+opts = {}
+
+options.each do |o|
+  s = o.split('=')
+  opts[s.first] = s.last
+end
+
+#STDERR.puts opts.inspect
+
+DBGet.read_config
+
+db_dump = DBGet::DBDump.new(opts)
+print db_dump.read
