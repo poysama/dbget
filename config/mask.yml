@@ -1,0 +1,16 @@
+people:
+  columns:
+    email: 'masked@caresharing.eu'
+    house_number: '01'
+    postal_code: '1234XX'
+    mobile_number: '123-4567'
+    phone_number: '123-4567'
+    firstname:
+    lastname:
+    street_name:
+    region:
+    birthplace:
+    city:
+patient_list_displays:
+  columns:
+    name:

@@ -1,0 +1,13 @@
+backups:
+  path: /opt/backups
+  cache: /tmp/dbget_backups
+
+openssl:
+  passphrase: xxxx
+
+mapping:
+  builtin_data:
+    mysql: builtin_data_production
+  test:
+    mysql: test_dev
+    mongo: test_dev
