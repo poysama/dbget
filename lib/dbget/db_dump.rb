@@ -8,7 +8,7 @@ module DBGet
 
     def initialize(opts)
       @name = opts['db']
-      @date = Date.strptime(opts['date'], "%m-%d-%Y") unless opts['date'] == 'date'
+      @date = Date.strptime(opts['date'], "%Y-%m-%d") unless opts['date'] == 'date'
       @server = opts['server']
       @db_type = opts['dbtype']
       @storage_path = File.join(BASE_BACKUPS_PATH, opts['server'], @db_type)
