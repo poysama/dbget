@@ -10,5 +10,8 @@ module DBGet
       config.merge!(YAML.load_file(yaml_path))
     end
 
+    def self.database(name)
+      self.instance['databases'][name]
+    end
   end
 end

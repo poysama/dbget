@@ -3,11 +3,26 @@ backups:
   cache: /tmp/dbget_backups
 
 openssl:
-  passphrase: xxxx
+  passphrase: xxx
 
-mapping:
-  builtin_data:
-    mysql: builtin_data_production
+databases:
+  lmedi:
+    mongo: lmedi_production
+  clinic:
+    mysql: clinic_production
   test:
-    mysql: test_dev
-    mongo: test_dev
+    mysql: test
+
+users: ['poy', 'jan']
+
+mysql:
+  host: localhost
+  port: 3306
+  username: root
+  password:
+
+mongo:
+  host: localhost
+  port: 27017
+  username: root
+  password:
