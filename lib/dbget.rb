@@ -6,7 +6,7 @@ module DBGet
   autoload :Config, File.join(File.dirname(__FILE__), 'dbget/config')
   autoload :Constants, File.join(File.dirname(__FILE__), 'dbget/constants')
   autoload :Dump, File.join(File.dirname(__FILE__), 'dbget/dump')
-  autoload :Dumper, File.join(File.dirname(__FILE__), 'dbget/dumper')
+  autoload :Controller, File.join(File.dirname(__FILE__), 'dbget/controller')
   autoload :Loaders, File.join(File.dirname(__FILE__), 'dbget/loaders')
   autoload :Runner, File.join(File.dirname(__FILE__), 'dbget/runner')
   autoload :Utils, File.join(File.dirname(__FILE__), 'dbget/utils')

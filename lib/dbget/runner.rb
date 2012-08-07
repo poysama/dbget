@@ -48,7 +48,7 @@ module DBGet
     end
 
     def dump
-      Dumper.boot(@options)
+      Controller.boot(@options)
     end
 
     def get_dbget_path

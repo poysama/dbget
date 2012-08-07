@@ -1,5 +1,5 @@
 module DBGet
-  class Dumper
+  class Controller
     def self.boot(options)
       self.new(options).run!
     end
@@ -16,7 +16,10 @@ module DBGet
     end
 
     def user_allowed?
-      raise "User not allowed to dump" unless @config['users'].include?(@dump.user)
+      unless @config['users'].include?(@dump.user)
+        raise "User not allowed to dump"
+        exit 1
+      end
     end
 
    def load_dump
