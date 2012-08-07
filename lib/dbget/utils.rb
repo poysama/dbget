@@ -4,12 +4,8 @@ require 'benchmark'
 module DBGet
   module Utils
 
-    def self.list_files(path)
-      dirs = []
-      Dir.new(path).entries.each do |dir_name|
-        dirs.push(dir_name) if dir_name != "." and dir_name != ".."
-      end
-      dirs.sort
+    def self.get_files(path)
+      Dir.new(path).entries - %w{ . .. }.sort
     end
 
     def self.decode_file(input_file)

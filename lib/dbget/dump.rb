@@ -21,13 +21,10 @@ module DBGet
       @verbose = opts['verbose']
 
       @storage_path = File.join(DBGet.base_backups_path, @server, @db_type)
-      @db_dump = nil
-      @encrypted_dump = nil
-      @decrypted_dump = nil
    end
 
     def get_final_dump
-      @db_name = get_db_name
+      @db_name = get_backup_name
       @encrypted_dump = get_encrypted_dump
       @decrypted_dump = get_decrypted_dump
     end
@@ -58,20 +55,31 @@ module DBGet
       File.basename(@encrypted_dump, File.extname(@encrypted_dump))
     end
 
-    def get_db_name
+    def get_backup_name
       if !@name.nil? and !@db_type.nil?
-        DBGet::Config.database(@name)[@db_type]
+        db = DBGet::Config.database(@name)
+
+        if db.nil?
+          raise "Database \'#{@name}\' not found in config!"
+        end
+
+        db[@db_type]
       end
     end
 
     def get_encrypted_dump
       monthly_dir_path = File.join(@storage_path, @db_name)
-      monthly_dirs = Dir["#{monthly_dir_path}/*/"].sort
+
+      unless File.exist?(monthly_dir_path)
+        raise "Database \'#{@db_name}\' can't be found in #{@storage_path}!"
+      end
+
+      monthly_dirs = Utils.get_files(monthly_dir_path)
 
       if !monthly_dirs.empty?
         db_month = get_db_month(monthly_dirs)
         db_dumps_path = File.join(monthly_dir_path.to_s, db_month.to_s)
-        db_dumps = Utils.list_files(db_dumps_path)
+        db_dumps = Utils.get_files(db_dumps_path)
 
         File.join(db_dumps_path, get_db_file(db_dumps))
       end
