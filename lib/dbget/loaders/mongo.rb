@@ -2,7 +2,6 @@ module DBGet
   module Loaders
     class Mongo
       include Constants
-      include Binaries
 
       def self.boot(dump, config)
         self.new(dump, config)
@@ -25,6 +24,7 @@ module DBGet
         dump_files = Dir["#{temp_path}/*#{MONGO_FILE_EXT}"]
         dump_files = specify_collections(dump_files, temp_path)
         mongo_restore(dump_files)
+        remove_temp_path(temp_path)
 
         Utils.say "Dump for #{@dump.db_name} done!"
       end
@@ -47,8 +47,8 @@ module DBGet
         temp_path = File.join(DBGet.cache_path, "#{decrypted_basename}_#{random}")
       end
 
-      def remove_temp_path
-        if FileUtils.rm_rf(temp_path)
+      def remove_temp_path(path)
+        if FileUtils.rm_rf(path)
           Utils.say "Temp directory removed!"
         end
       end

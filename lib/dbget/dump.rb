@@ -36,8 +36,9 @@ module DBGet
     protected
 
     def get_decrypted_dump
-      if !@encrypted_dump.nil?
+      unless @encrypted_dump.nil?
         cached_file_path = File.join(DBGet.cache_path, decrypted_file_name)
+        cached_file_path.concat('.tar') if @db_type.eql? 'mongo'
 
         if File.exists? cached_file_path
           file_path = cached_file_path
@@ -52,7 +53,7 @@ module DBGet
     end
 
     def decrypted_file_name
-      File.basename(@encrypted_dump, File.extname(@encrypted_dump))
+      File.basename(@encrypted_dump.split('.').first)
     end
 
     def get_backup_name
