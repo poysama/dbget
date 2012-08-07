@@ -20,11 +20,7 @@ module DBGet
         clean_dump if @dump.clean?
         create_db_if_not_exist
 
-        if dump_file_exist?
-          dump_mysql
-        else
-          raise "Dump for #{@dump.decrypted_dump} not found!"
-        end
+        dump_mysql
 
         puts "Hooray! Dump for #{@dump.decrypted_dump} done!"
       end
@@ -59,16 +55,12 @@ module DBGet
         system "echo \"CREATE DATABASE IF NOT EXISTS #{@dump.db_name}\" | #{@dump_command}"
       end
 
-      def dump_file_exist?
-        File.exist?(@dump.decrypted_dump) and !File.size?(@dump.decrypted_dump).nil?
-      end
-
       def dump_mysql
         @dump_command += " #{@dump.db_name} "
 
         puts "Dumping #{@dump.name} to #{@dump.db_name}..."
 
-        system "#{@dump_command}< #{File.join(@dump.decrypted_dump)}"
+        system "#{@dump_command}< #{@dump.decrypted_dump}"
       end
     end
   end

@@ -31,15 +31,11 @@ module DBGet
 
       def mongo_restore(dump_files)
         dump_files.each do |file|
-          if !index?(file)
+          unless index?(file)
             Utils.say_with_time "Dumping #{file}..." do
               mongo_restore = Binaries.mongorestore_cmd
 
-              if !@dump.verbose
-                `#{mongo_restore} -d #{@dump.db_name} #{file} --drop 2>&1 /dev/null`
-              else
-                system "#{mongo_restore} -d #{@dump.db_name} #{file} --drop"
-              end
+              system "#{mongo_restore} -d #{@dump.db_name} #{file} --drop"
             end
           end
         end
