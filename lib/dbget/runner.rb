@@ -31,6 +31,7 @@ module DBGet
       @options['date'] = format_date(@options['date'])
       @options['clean'] = Utils.to_bool(@options['clean'])
       @options['verbose'] = Utils.to_bool(@options['verbose'])
+      @options['append_date'] = Utils.to_bool(@options['append_date'])
     end
 
     def get_final_collection(collection)

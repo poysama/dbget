@@ -11,8 +11,10 @@ module DBGet
 
     def run!
       user_allowed?
-      @dump.get_final_dump
+      @dump.prepare
+      finalize_dump
       load_dump
+      status_report
     end
 
     def user_allowed?
@@ -22,15 +24,38 @@ module DBGet
       end
     end
 
-   def load_dump
-      case @dump.db_type
-      when 'mysql'
-        DBGet::Loaders::MySql.boot(@dump, @config).load!
-      when 'mongo'
-        DBGet::Loaders::Mongo.boot(@dump, @config).load!
+    def finalize_dump
+      if @dump.in_cache? @dump.cache_file
+        message = "Found cached file, no need to decrypt."
       else
-        raise "Dump is not supported!"
+        message = "Decrypting #{@dump.encrypted_dump}..."
       end
+
+      Utils.say_with_time message do
+        @dump.decrypted_dump = @dump.decrypt_dump
+      end
+
+      @dump.set_final_db
+    end
+
+    def load_dump
+      Utils.say_with_time "Dumping, this may take a while" do
+        case @dump.db_type
+        when 'mysql'
+          DBGet::Loaders::MySql.boot(@dump, @config).load!
+        when 'mongo'
+          DBGet::Loaders::Mongo.boot(@dump, @config).load!
+        else
+          raise "Dump is not supported!"
+        end
+      end
+
+    end
+
+    def status_report
+      Utils.say "Dump for #{@dump.db} done!"
+      Utils.say "Source: #{@dump.decrypted_dump}"
+      Utils.say "Target: #{@dump.target_db}"
     end
   end
 end

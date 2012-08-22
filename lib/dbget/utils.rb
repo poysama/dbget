@@ -5,7 +5,7 @@ module DBGet
   module Utils
 
     def self.get_files(path)
-      Dir.new(path).entries - %w{ . .. }.sort
+      Dir.new(path).entries - %w{ . .. }
     end
 
     def self.decode_file(input_file)
@@ -58,16 +58,8 @@ module DBGet
       raise ArgumentError.new("invalid value for Boolean: \"#{string}\"")
     end
 
-    def self.form_db_name(dump)
-      if dump.date.nil?
-        dump.db_name = "#{dump.user}_#{dump.db_name}"
-      else
-        dump.db_name = "#{dump.user}_#{dump.db_name}_#{get_converted_date(dump)}"
-      end
-    end
-
-    def self.get_converted_date(dump)
-      dump.date.to_s.delete('-')
+    def self.get_converted_date(date)
+      date.to_s.delete('-')
     end
   end
 end

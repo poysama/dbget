@@ -16,21 +16,10 @@ module DBGet
       end
 
       def load!
-        form_db_name
+        @dump.form_db_name
         clean_dump if @dump.clean?
         create_db_if_not_exist
-
         dump_mysql
-
-        puts "Hooray! Dump for #{@dump.decrypted_dump} done!"
-      end
-
-      def form_db_name
-        if @dump.date.nil?
-          @dump.db_name = "#{@dump.user}_#{@dump.db_name}"
-        else
-          @dump.db_name = "#{@dump.user}_#{@dump.db_name}_#{get_converted_date}"
-        end
       end
 
       def form_dump_command
@@ -48,19 +37,18 @@ module DBGet
 
       def clean_dump
         puts "Dropping database..."
-        system "echo \"DROP DATABASE IF EXISTS #{@dump.db_name}\" | #{@dump_command}"
+        system "echo \"DROP DATABASE IF EXISTS #{@dump.target_db}\" | #{@dump_command}"
       end
 
       def create_db_if_not_exist
-        system "echo \"CREATE DATABASE IF NOT EXISTS #{@dump.db_name}\" | #{@dump_command}"
+        system "echo \"CREATE DATABASE IF NOT EXISTS #{@dump.target_db}\" | #{@dump_command}"
       end
 
       def dump_mysql
-        @dump_command += " #{@dump.db_name} "
+        @dump_command += " #{@dump.target_db} "
 
-        puts "Dumping #{@dump.name} to #{@dump.db_name}..."
-
-        system "#{@dump_command}< #{@dump.decrypted_dump}"
+        out = system("#{@dump_command}< #{@dump.decrypted_dump}")
+        exit 1 unless out
       end
     end
   end
