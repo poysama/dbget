@@ -104,7 +104,7 @@ module DBGet
       if !monthly_dirs.empty?
         db_month = get_db_month(monthly_dirs)
         db_dumps_path = File.join(monthly_dir_path.to_s, db_month.to_s)
-        db_dumps = Utils.get_files(db_dumps_path)
+        db_dumps = Utils.get_files(db_dumps_path).sort
 
         @encrypted_dump = File.join(db_dumps_path, get_db_file(db_dumps))
       end

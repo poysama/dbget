@@ -26,7 +26,7 @@ module DBGet
 
     def finalize_dump
       if @dump.in_cache? @dump.cache_file
-        message = "Found cached file, no need to decrypt."
+        message = "Found cached file #{@dump.cache_file}, no need to decrypt."
       else
         message = "Decrypting #{@dump.encrypted_dump}..."
       end
