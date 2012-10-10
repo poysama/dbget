@@ -40,16 +40,15 @@ module DBGet
 
     def load_dump
       Utils.say_with_time "Dumping, this may take a while" do
-        case @dump.db_type
+        case @dump.type
         when 'mysql'
-          DBGet::Loaders::MySql.boot(@dump, @config).load!
+          DBGet::Loader::MySql.boot(@dump, @config).load!
         when 'mongo'
-          DBGet::Loaders::Mongo.boot(@dump, @config).load!
+          DBGet::Loader::Mongo.boot(@dump, @config).load!
         else
           raise "Dump is not supported!"
         end
       end
-
     end
 
     def status_report

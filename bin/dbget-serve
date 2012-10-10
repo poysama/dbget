@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
 require File.expand_path(File.join(File.dirname(__FILE__), '../lib/dbget'))
-exit if ENV['SSH_ORIGINAL_COMMAND'].nil?
 
-options = ENV['SSH_ORIGINAL_COMMAND'].split(" ")
-user = ARGV[0]
-
-runner = DBGet::Runner.boot(user, options)
+runner = DBGet::Runner::Base.boot(ARGV)

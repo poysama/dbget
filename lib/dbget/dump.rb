@@ -5,25 +5,25 @@ module DBGet
     include Constants
     include Utils
 
-    attr_reader :db_type, :user, :db
+    attr_reader :type, :user, :db
     attr_reader :encrypted_dump
     attr_reader :date, :clean, :verbose, :append_date
     attr_accessor :backup_name, :collections, :target_db, :decrypted_dump
 
     def initialize(opts)
       @db = opts['db']
-      @db_type = opts['db_type']
+      @type = opts['type']
       @user = opts['user']
-      @server = opts['server']
+      @source = opts['source']
+      @suffix = opts['suffix']
       @custom_name = opts['custom_name']
 
       @collections = opts['collections']
       @date = opts['date']
-      @clean = opts['clean']
-      @verbose = opts['verbose']
-      @append_date = opts['append_date']
+      @clean = Utils.to_bool(opts['clean'])
+      @append_date = Utils.to_bool(opts['append_date'])
 
-      @storage_path = File.join(DBGet.base_backups_path, @server, @db_type)
+      @storage_path = File.join(DBGet.base_backups_path, @source, @type)
     end
 
     def prepare
@@ -32,7 +32,11 @@ module DBGet
     end
 
     def set_final_db
-      @target_db = @custom_name || @backup_name
+      unless @suffix.nil?
+        @target_db = "%s_%s" % [@db, @suffix]
+      else
+        @target_db = @custom_name || @backup_name
+      end
     end
 
     def form_db_name
@@ -65,7 +69,7 @@ module DBGet
 
     def cache_file
       file = File.join(DBGet.cache_path, decrypted_file_name)
-      file.concat('.tar') if @db_type.eql? 'mongo'
+      file.concat('.tar') if @type.eql? 'mongo'
 
       file
     end
@@ -81,15 +85,16 @@ module DBGet
     end
 
     def get_backup_name
-      if !@db.nil? and !@db_type.nil?
+      if !@db.nil? and !@type.nil?
         db = DBGet::Config.database(@db)
 
         if db.nil?
           raise "Database \'#{@db}\' not found in config!"
         end
-
-        db[@db_type]
       end
+
+      raise "Backup #{@db} with type #{@type} not found." if db[@type].nil?
+      db[@type]
     end
 
     def get_encrypted_dump
@@ -125,9 +130,11 @@ module DBGet
         db_dumps.each do |filename|
           if filename.include? "-#{@date.strftime("%Y%m%d")}"
             db_file = filename
-            break
           end
         end
+
+        raise "Can't find backup with that specific date." if db_file.nil?
+        db_file
       end
 
       db_file

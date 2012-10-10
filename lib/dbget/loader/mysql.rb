@@ -1,5 +1,5 @@
 module DBGet
-  module Loaders
+  module Loader
     class MySql
       include Constants
       include Binaries

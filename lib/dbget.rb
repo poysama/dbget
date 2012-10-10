@@ -1,15 +1,16 @@
 require 'yaml'
 
 module DBGet
-  autoload :Admin, File.join(File.dirname(__FILE__), 'dbget/admin')
-  autoload :Binaries, File.join(File.dirname(__FILE__), 'dbget/binaries')
-  autoload :Config, File.join(File.dirname(__FILE__), 'dbget/config')
-  autoload :Constants, File.join(File.dirname(__FILE__), 'dbget/constants')
-  autoload :Dump, File.join(File.dirname(__FILE__), 'dbget/dump')
-  autoload :Controller, File.join(File.dirname(__FILE__), 'dbget/controller')
-  autoload :Loaders, File.join(File.dirname(__FILE__), 'dbget/loaders')
-  autoload :Runner, File.join(File.dirname(__FILE__), 'dbget/runner')
-  autoload :Utils, File.join(File.dirname(__FILE__), 'dbget/utils')
+  DBGET_LIB_ROOT = File.join(File.dirname(__FILE__), 'dbget')
+  autoload :Admin, File.join(DBGET_LIB_ROOT, 'admin')
+  autoload :Binaries, File.join(DBGET_LIB_ROOT, 'binaries')
+  autoload :Config, File.join(DBGET_LIB_ROOT, 'config')
+  autoload :Constants, File.join(DBGET_LIB_ROOT, 'constants')
+  autoload :Dump, File.join(DBGET_LIB_ROOT, 'dump')
+  autoload :Controller, File.join(DBGET_LIB_ROOT, 'controller')
+  autoload :Loader, File.join(DBGET_LIB_ROOT, 'loader')
+  autoload :Runner, File.join(DBGET_LIB_ROOT, 'runner')
+  autoload :Utils, File.join(DBGET_LIB_ROOT, 'utils')
 
   def self.read_config(dbget_path)
     config_file = File.join(dbget_path, Constants::CONFIG_PATH)

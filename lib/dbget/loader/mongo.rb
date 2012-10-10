@@ -1,5 +1,5 @@
 module DBGet
-  module Loaders
+  module Loader
     class Mongo
       include Constants
 
