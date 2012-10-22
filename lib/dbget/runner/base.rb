@@ -21,7 +21,7 @@ module DBGet
         end
 
         @options['append_date'] = ENV['dbget_append_date']
-        @options['clean'] = ENV['dbget_clean']
+        @options['clean'] = ENV['dbget_clean'] || false
         @options['collections'] = ENV['dbget_collections']
         @options['custom_name'] = ENV['dbget_custom_name']
         @options['date'] = ENV['dbget_date']
